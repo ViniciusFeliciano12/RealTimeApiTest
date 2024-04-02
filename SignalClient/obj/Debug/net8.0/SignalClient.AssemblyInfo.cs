@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SignalClient")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+210f5b0aeac738ea1250a3875651aa4ffb710894")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dde185c9efa45324423be34a0a966b1bfdab1790")]
 [assembly: System.Reflection.AssemblyProductAttribute("SignalClient")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SignalClient")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 
-var uri = "http://192.168.0.7:5207/chat";
+var uri = "http://192.168.0.7:5207/time";
 
 await using var connection = new HubConnectionBuilder().WithUrl(uri).Build();
 

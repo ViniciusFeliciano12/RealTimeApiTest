@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiTesteApp.View.ChatPage"
+             Title="ChatPage">
+    <VerticalStackLayout VerticalOptions="FillAndExpand">
+
+        <ListView x:Name="listView">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout>
+                            <Grid VerticalOptions="CenterAndExpand" ColumnDefinitions="Auto, *">
+                                <Label TextColor="Yellow">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span Text="Name: "/>
+                                                <Span Text="{Binding Username}"/>
+                                                <Span Text=" | "/>
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <Label Grid.Column="2" Text="{Binding MessageText}"/>
+
+                            </Grid>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        
+        <Grid
+            VerticalOptions="EndAndExpand"
+            ColumnDefinitions="*, Auto">
+            <Entry x:Name="entry" VerticalOptions="EndAndExpand" Grid.Column="0" Placeholder="Envie sua mensagem aqui"/>
+            <Button Clicked="Button_Clicked" Margin="0,0,0,6" Grid.Column="1" Text="Send"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
