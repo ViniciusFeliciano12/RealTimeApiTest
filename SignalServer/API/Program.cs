@@ -1,10 +1,17 @@
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.OpenApi.Models;
 using SignalServer.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Some API v1", Version = "v1" });
+    options.AddSignalRSwaggerGen();
+});
 
 builder.Services.AddCors(options =>
 {

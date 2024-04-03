@@ -526,6 +526,19 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.OpenApi/1.2.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "Newtonsoft.Json/11.0.2": {
         "type": "package",
         "compile": {
@@ -538,6 +551,74 @@
             "related": ".xml"
           }
         }
+      },
+      "SignalRSwaggerGen/4.5.0": {
+        "type": "package",
+        "dependencies": {
+          "SignalRSwaggerGen.Core": "1.1.0",
+          "Swashbuckle.AspNetCore.SwaggerGen": "6.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.1/SignalRSwaggerGen.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/SignalRSwaggerGen.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "SignalRSwaggerGen.Core/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/SignalRSwaggerGen.Core.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.1/SignalRSwaggerGen.Core.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Swashbuckle.AspNetCore.Swagger/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.OpenApi": "1.2.3"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "Swashbuckle.AspNetCore.SwaggerGen/6.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Swashbuckle.AspNetCore.Swagger": "6.0.0"
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "System.Buffers/4.5.0": {
         "type": "package",
@@ -1182,6 +1263,23 @@
         "runtime.json"
       ]
     },
+    "Microsoft.OpenApi/1.2.3": {
+      "sha512": "Nug3rO+7Kl5/SBAadzSMAVgqDlfGjJZ0GenQrLywJ84XGKO0uRqkunz5Wyl0SDwcR71bAATXvSdbdzPrYRYKGw==",
+      "type": "package",
+      "path": "microsoft.openapi/1.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/Microsoft.OpenApi.dll",
+        "lib/net46/Microsoft.OpenApi.pdb",
+        "lib/net46/Microsoft.OpenApi.xml",
+        "lib/netstandard2.0/Microsoft.OpenApi.dll",
+        "lib/netstandard2.0/Microsoft.OpenApi.pdb",
+        "lib/netstandard2.0/Microsoft.OpenApi.xml",
+        "microsoft.openapi.1.2.3.nupkg.sha512",
+        "microsoft.openapi.nuspec"
+      ]
+    },
     "Newtonsoft.Json/11.0.2": {
       "sha512": "IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
       "type": "package",
@@ -1210,6 +1308,74 @@
         "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
         "newtonsoft.json.11.0.2.nupkg.sha512",
         "newtonsoft.json.nuspec"
+      ]
+    },
+    "SignalRSwaggerGen/4.5.0": {
+      "sha512": "M7Uz47lhJ6xjkWsATaxSdrXBHqnpKVzbW8Hhz5/orQoarIGtBRq9pd/LBvMSm6U9xPlCNG5gpVpQF9bnuBrqsQ==",
+      "type": "package",
+      "path": "signalrswaggergen/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "Logo.png",
+        "lib/netstandard2.0/SignalRSwaggerGen.dll",
+        "lib/netstandard2.0/SignalRSwaggerGen.xml",
+        "lib/netstandard2.1/SignalRSwaggerGen.dll",
+        "lib/netstandard2.1/SignalRSwaggerGen.xml",
+        "signalrswaggergen.4.5.0.nupkg.sha512",
+        "signalrswaggergen.nuspec"
+      ]
+    },
+    "SignalRSwaggerGen.Core/1.1.0": {
+      "sha512": "oDW4CCh8JuW4VgoTVCRi14aTOPhyyfF4Srb3rNzh0hkQw+EwYvyNlRWtALaCBGk8OeaXK50P7ezL5exClPNXJA==",
+      "type": "package",
+      "path": "signalrswaggergen.core/1.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "Logo.png",
+        "lib/netstandard2.0/SignalRSwaggerGen.Core.dll",
+        "lib/netstandard2.0/SignalRSwaggerGen.Core.xml",
+        "lib/netstandard2.1/SignalRSwaggerGen.Core.dll",
+        "lib/netstandard2.1/SignalRSwaggerGen.Core.xml",
+        "signalrswaggergen.core.1.1.0.nupkg.sha512",
+        "signalrswaggergen.core.nuspec"
+      ]
+    },
+    "Swashbuckle.AspNetCore.Swagger/6.0.0": {
+      "sha512": "onkGK5eDFmyNy605E5ZaT5oXEGsQJz2UEKsUOqYCZRBC2Fi6MbByUl+qznyl3pZ9/4nTvukUjt9+v28qvJPk/Q==",
+      "type": "package",
+      "path": "swashbuckle.aspnetcore.swagger/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.dll",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.pdb",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.Swagger.xml",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.Swagger.dll",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.Swagger.pdb",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.Swagger.xml",
+        "swashbuckle.aspnetcore.swagger.6.0.0.nupkg.sha512",
+        "swashbuckle.aspnetcore.swagger.nuspec"
+      ]
+    },
+    "Swashbuckle.AspNetCore.SwaggerGen/6.0.0": {
+      "sha512": "RXY21STD/yo4Uzy1L5GoRrEQQWoOosw0QBYo572VwcjePmpV1yFFHsTeThlMNBWKoTt6xadIdSjZj0FmDFYL2A==",
+      "type": "package",
+      "path": "swashbuckle.aspnetcore.swaggergen/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
+        "lib/netcoreapp3.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerGen.dll",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerGen.pdb",
+        "lib/netstandard2.0/Swashbuckle.AspNetCore.SwaggerGen.xml",
+        "swashbuckle.aspnetcore.swaggergen.6.0.0.nupkg.sha512",
+        "swashbuckle.aspnetcore.swaggergen.nuspec"
       ]
     },
     "System.Buffers/4.5.0": {
@@ -2034,32 +2200,30 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "Microsoft.AspNetCore.SignalR >= 1.1.0"
+      "Microsoft.AspNetCore.SignalR >= 1.1.0",
+      "SignalRSwaggerGen >= 4.5.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\trenddev01\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Nuget": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\github\\RealTimeApiTest\\SignalServer\\SignalServer.csproj",
+      "projectUniqueName": "C:\\repositorios_gitHub\\RealTimeApiTest\\signalServer\\SignalServer.csproj",
       "projectName": "SignalServer",
-      "projectPath": "C:\\github\\RealTimeApiTest\\SignalServer\\SignalServer.csproj",
-      "packagesPath": "C:\\Users\\trenddev01\\.nuget\\packages\\",
-      "outputPath": "C:\\github\\RealTimeApiTest\\SignalServer\\obj\\",
+      "projectPath": "C:\\repositorios_gitHub\\RealTimeApiTest\\signalServer\\SignalServer.csproj",
+      "packagesPath": "C:\\Nuget",
+      "outputPath": "C:\\repositorios_gitHub\\RealTimeApiTest\\signalServer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\trenddev01\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Vinicius\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2088,6 +2252,10 @@
           "Microsoft.AspNetCore.SignalR": {
             "target": "Package",
             "version": "[1.1.0, )"
+          },
+          "SignalRSwaggerGen": {
+            "target": "Package",
+            "version": "[4.5.0, )"
           }
         },
         "imports": [

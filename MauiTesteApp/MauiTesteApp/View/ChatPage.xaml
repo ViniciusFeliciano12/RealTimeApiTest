@@ -1,29 +1,78 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MauiTesteApp.View.ChatPage"
-             Title="ChatPage">
-    <VerticalStackLayout VerticalOptions="FillAndExpand">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MauiTesteApp.View.ChatPage"
+    xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+    android:Application.WindowSoftInputModeAdjust="Pan"
+    Title="ChatPage">
 
-        <ListView x:Name="listView">
+    <Grid 
+        RowDefinitions="Auto, *"
+        VerticalOptions="EndAndExpand">
+
+        <Grid 
+            Grid.Row="0"
+            x:Name="stack2"
+            ColumnDefinitions="*, Auto">
+            <Entry
+                x:Name="entry2"
+                VerticalOptions="EndAndExpand"
+                Grid.Column="0"
+                Placeholder="Digite seu nome de usuário" />
+            <Button
+                VerticalOptions="EndAndExpand"
+                Grid.Column="1"
+                Clicked="Button_Clicked_1"
+                Margin="0,0,0,6"
+                Text="Send" />
+        </Grid>
+        
+
+        <ListView
+            InputTransparent="True"
+            Grid.Row="0"
+            IsVisible="false"
+            Grid.ColumnSpan="2"
+            x:Name="listView">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout>
-                            <Grid VerticalOptions="CenterAndExpand" ColumnDefinitions="Auto, *">
-                                <Label TextColor="Yellow">
+                            <Grid
+                                VerticalOptions="CenterAndExpand"
+                                RowDefinitions="Auto, *">
+                                <Label
+                                    TextColor="Yellow">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <FormattedString.Spans>
-                                                <Span Text="Name: "/>
-                                                <Span Text="{Binding Username}"/>
-                                                <Span Text=" | "/>
+                                                <Span
+                                                    TextColor="Yellow"
+                                                    Text="Name: " />
+                                                <Span
+                                                    TextColor="Red"
+                                                    Text="{Binding Username}" />
                                             </FormattedString.Spans>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
 
-                                <Label Grid.Column="2" Text="{Binding MessageText}"/>
+                                <Label
+                                    Grid.Row="1">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <FormattedString.Spans>
+                                                <Span
+                                                    TextColor="CadetBlue"
+                                                    Text="Mensagem: " />
+                                                <Span
+                                                    TextColor="White"
+                                                    Text="{Binding MessageText}" />
+                                            </FormattedString.Spans>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
 
                             </Grid>
                         </StackLayout>
@@ -31,13 +80,27 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-        
-        <Grid
+
+        <Grid 
+            Grid.Row="1"
+            IsVisible="False"
+            x:Name="stack1"
             VerticalOptions="EndAndExpand"
             ColumnDefinitions="*, Auto">
-            <Entry x:Name="entry" VerticalOptions="EndAndExpand" Grid.Column="0" Placeholder="Envie sua mensagem aqui"/>
-            <Button Clicked="Button_Clicked" Margin="0,0,0,6" Grid.Column="1" Text="Send"/>
+            <Entry
+                x:Name="entry"
+                VerticalOptions="EndAndExpand"
+                Grid.Column="0"
+                Placeholder="Envie sua mensagem aqui" />
+            <Button
+                VerticalOptions="EndAndExpand"
+                Grid.Column="1"
+                Clicked="Button_Clicked"
+                Margin="0,0,0,6"
+                Text="Send" />
         </Grid>
-    </VerticalStackLayout>
+        
+
+    </Grid>
+
 </ContentPage>

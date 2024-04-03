@@ -22,7 +22,7 @@ public partial class ChatPage : ContentPage
         try
         {
 
-            var uri = $"http://192.168.0.7:5207/chat";
+            var uri = $"http://10.51.226.220:5207/chat";
 
             hubConnection = new HubConnectionBuilder().
             WithUrl(uri).
@@ -63,8 +63,25 @@ public partial class ChatPage : ContentPage
 
         await hubConnection!.InvokeCoreAsync("SendMessage", args: new[]
         {
-            "Rodolfo", 
+            entry2.Text, 
             entry.Text
         });
+
+        entry.Text = "";
     }
+
+    private void Button_Clicked_1(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(entry2.Text))
+        {
+            return;
+        }
+
+        stack1.IsVisible = true;
+        listView.IsVisible = true;
+        stack2.IsVisible = false;
+
+    }
+
+    
 }
