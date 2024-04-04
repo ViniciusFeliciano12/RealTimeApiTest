@@ -22,7 +22,7 @@ public partial class ChatPage : ContentPage
         try
         {
 
-            var uri = $"http://10.51.226.220:5207/chat";
+            var uri = $"http://192.168.100.14:5207/chat";
 
             hubConnection = new HubConnectionBuilder().
             WithUrl(uri).
@@ -30,7 +30,7 @@ public partial class ChatPage : ContentPage
 
 
 
-            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+            hubConnection.On<string, string, string>("ReceiveMessage", (user, message, hour) =>
             {
                 messages.Add(new Message(user, message));
 

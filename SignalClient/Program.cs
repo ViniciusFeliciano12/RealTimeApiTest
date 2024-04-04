@@ -10,9 +10,9 @@ namespace ChatApp
 
             var connection = new HubConnectionBuilder().WithUrl(uri).Build();
 
-            connection.On<string, string>("ReceiveMessage", (user, message) =>
+            connection.On<string, string, string>("ReceiveMessage", (user, message, time) =>
             {
-                Console.WriteLine($"usuário: {user}, mensagem: {message}");
+                Console.WriteLine($"{time} {user}: {message}");
             });
 
             try
@@ -30,7 +30,7 @@ namespace ChatApp
                         break;
 
                     // Envia a mensagem para o servidor
-                    await connection.InvokeAsync("SendMessage", "bibi e um viado", input);
+                    await connection.InvokeAsync("SendMessage", "Administrador", input);
                 }
             }
             catch (Exception ex)

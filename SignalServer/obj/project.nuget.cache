@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QxAhHKfz5X06q8Ukv6pOe/70EkFFbj/j0M62FM49ReJv9cHJSE9KFl391S8lUx1lhEpEDax3Aj8kAUnFIwTk1Q==",
+  "dgSpecHash": "/uEWF4GAZ6r45BvPCS7F8gs/3PM6q+MRqWhPMZNgRl3UZ3ekdkJ+hPVmnp/nZMikWufiUAgjsLXAES724Nnsxw==",
   "success": true,
-  "projectFilePath": "C:\\repositorios_gitHub\\RealTimeApiTest\\SignalServer\\SignalServer.csproj",
+  "projectFilePath": "C:\\repositorios_gitHub\\RealTimeApiTest\\signalServer\\SignalServer.csproj",
   "expectedPackageFiles": [
     "C:\\Nuget\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Nuget\\microsoft.aspnetcore.authorization\\2.2.0\\microsoft.aspnetcore.authorization.2.2.0.nupkg.sha512",

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plataforma_rpg/views/HomePage.dart';
+import 'package:plataforma_rpg/views/home_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -8,9 +8,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
       ),
       home: const MyHomePage(title: 'Ué'),
     );
