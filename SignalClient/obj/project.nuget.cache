@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "CpMznGKWsnLRk97TJkYHCUK3N+owSbxWMLaMjxsnrzeWVzwTG1ZqMXitqv23O8gA60oRKC0lQTORn0J50Gofgg==",
+  "dgSpecHash": "rp+Wa5p33iuSgTsASrszUM9pDC17zf2Vu2lCT9PFHiFZAglaX4pvnz9U7NyLZI093dCN6Qw/D5l8RDc2Sk6Xkw==",
   "success": true,
-  "projectFilePath": "C:\\repositorios_gitHub\\RealTimeApiTest\\signalClient\\SignalClient.csproj",
+  "projectFilePath": "C:\\repositorios_gitHub\\RealTimeApiTest\\SignalClient\\SignalClient.csproj",
   "expectedPackageFiles": [
     "C:\\Nuget\\microsoft.aspnetcore.connections.abstractions\\8.0.3\\microsoft.aspnetcore.connections.abstractions.8.0.3.nupkg.sha512",
     "C:\\Nuget\\microsoft.aspnetcore.http.connections.client\\8.0.3\\microsoft.aspnetcore.http.connections.client.8.0.3.nupkg.sha512",
