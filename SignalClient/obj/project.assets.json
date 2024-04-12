@@ -754,25 +754,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Nuget": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\trenddev01\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\repositorios_gitHub\\RealTimeApiTest\\SignalClient\\SignalClient.csproj",
+      "projectUniqueName": "C:\\github\\RealTimeApiTest\\signalClient\\SignalClient.csproj",
       "projectName": "SignalClient",
-      "projectPath": "C:\\repositorios_gitHub\\RealTimeApiTest\\SignalClient\\SignalClient.csproj",
-      "packagesPath": "C:\\Nuget",
-      "outputPath": "C:\\repositorios_gitHub\\RealTimeApiTest\\SignalClient\\obj\\",
+      "projectPath": "C:\\github\\RealTimeApiTest\\signalClient\\SignalClient.csproj",
+      "packagesPath": "C:\\Users\\trenddev01\\.nuget\\packages\\",
+      "outputPath": "C:\\github\\RealTimeApiTest\\signalClient\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Vinicius\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\trenddev01\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"

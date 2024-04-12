@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SignalServer.API.Hubs;
 
@@ -6,6 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer("DefaultConnection"));
 
 builder.Services.AddSwaggerGen(options =>
 {
