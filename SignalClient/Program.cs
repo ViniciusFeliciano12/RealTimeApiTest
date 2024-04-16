@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ChatApp
 {
@@ -6,7 +9,7 @@ namespace ChatApp
     {
         static async Task Main(string[] args)
         {
-            var uri = "http://192.168.0.12:5207/chat";
+            var uri = "http://192.168.237.21:5207/chat";
 
             var connection = new HubConnectionBuilder().WithUrl(uri).Build();
 
@@ -45,3 +48,4 @@ namespace ChatApp
         }
     }
 }
+

@@ -1,40 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:plataforma_rpg/views/drawer_view.dart';
-import 'package:plataforma_rpg/views/home_page.dart';
-import 'package:plataforma_rpg/views/register_page.dart';
 
-import '../models/user.dart';
 import '../services/interfaces/ihub_connection.dart';
 import '../services/service_locator.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
 
   @override
   void initState() {
     super.initState();
 
-    hubConnect.startLogin((messages) {
-      if (messages[0] == "Username ou senha não confere.") {
-        _showDialog(messages[0]);
-      } else {
-        hubConnect.usuario = User.fromJson(messages[0]);
-        hubConnect.stopLogin();
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const MyHomePage(title: "tsta"),
-          ),
-        );
+    hubConnect.startRegister((messages) {
+      if (messages[0] == "Usuário cadastrado") {
+        hubConnect.stopRegister();
+        Navigator.pop(context);
       }
+      _showDialog(messages[0]);
     });
   }
 
@@ -42,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     TextEditingController userController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
 
     return Scaffold(
       body: Center(
@@ -68,28 +57,25 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: 'Senha', filled: true, fillColor: Colors.white),
                   onSubmitted: (value) {},
                 ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      hubConnect.sendLogin(
-                          userController.text, passwordController.text);
-                    },
-                    child: const Text("Login"),
-                  ),
+                TextField(
+                  controller: confirmPasswordController,
+                  decoration: const InputDecoration(
+                      hintText: 'Confirmar senha',
+                      filled: true,
+                      fillColor: Colors.white),
+                  onSubmitted: (value) {},
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 5),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  const RegisterPage(),
-                        ),
-                      );
+                      if (passwordController.text ==
+                          confirmPasswordController.text) {
+                        hubConnect.sendRegister(
+                            userController.text, passwordController.text);
+                      } else {
+                        _showDialog("Senha não confere com a confirmação");
+                      }
                     },
                     child: const Text("Register"),
                   ),
@@ -108,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context) {
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: const Text("Login"),
+          title: const Text("Registro"),
           content: Text(message),
           actions: <Widget>[
             // define os botões na base do dialogo

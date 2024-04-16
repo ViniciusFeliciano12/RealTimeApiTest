@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plataforma_rpg/views/home_page.dart';
+import 'package:plataforma_rpg/views/login_page.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
       ),
-      home: const MyHomePage(title: 'Ué'),
+      home: const LoginPage(),
     );
   }
 }

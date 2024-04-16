@@ -9,7 +9,7 @@ builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer("DefaultConnection"));
+        options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"));
 
 builder.Services.AddSwaggerGen(options =>
 {

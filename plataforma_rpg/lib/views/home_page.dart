@@ -19,7 +19,6 @@ class MyHomePage extends StatefulWidget {
 List<Message> listMessages = [];
 final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
 TextEditingController textController = TextEditingController();
-TextEditingController nameController = TextEditingController();
 final FocusNode _focusNode = FocusNode();
 final ScrollController _scrollController = ScrollController();
 final player = AudioPlayer();
@@ -72,12 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
-        title: TextField(
-          controller: nameController,
-          decoration: const InputDecoration(
-            hintText: 'Digite seu nome aqui',
-          ),
-        ),
       ),
       body: VisibilityDetector(
         onVisibilityChanged: (info) {
@@ -114,12 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
             filled: true,
             fillColor: Colors.white),
         onSubmitted: (value) {
-          if (textController.text.isNotEmpty &&
-              nameController.text.isNotEmpty) {
-            hubConnect.sendMessage(nameController.text, textController.text);
-            textController.text = "";
-            _focusNode.requestFocus();
-          }
+          hubConnect.sendMessage(
+              hubConnect.usuario.userName, textController.text);
+          textController.text = "";
+          _focusNode.requestFocus();
         },
       ),
     );

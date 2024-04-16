@@ -6,13 +6,13 @@ namespace SignalServer.API.Hubs
     [SignalRHub]
     class MyHub : Hub
     {
-        public async IAsyncEnumerable<String> Streaming(CancellationToken cancellationToken)
+        public async IAsyncEnumerable<String> Streaming()
         {
             while (true)
             {
                 var flag = "A hora é " + DateTime.Now;
                 yield return flag;
-                await Task.Delay(1000, cancellationToken);
+                await Task.Delay(1000);
             }
         }
 }

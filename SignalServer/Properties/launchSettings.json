@@ -1,6 +1,6 @@
 ﻿{
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=MeuBancoDeDados;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
