@@ -18,27 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
 
   @override
-  void initState() {
-    super.initState();
-
-    hubConnect.startLogin((messages) {
-      if (messages[0] == "Username ou senha não confere.") {
-        _showDialog(messages[0]);
-      } else {
-        hubConnect.usuario = User.fromJson(messages[0]);
-        hubConnect.stopLogin();
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const MyHomePage(title: "tsta"),
-          ),
-        );
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     TextEditingController userController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
@@ -63,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   onSubmitted: (value) {},
                 ),
                 TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
                       hintText: 'Senha', filled: true, fillColor: Colors.white),
@@ -71,9 +51,23 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 10),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      hubConnect.sendLogin(
+                    onPressed: () async {
+                      var response = await hubConnect.sendLogin(
                           userController.text, passwordController.text);
+
+                      if (response == "Logado") {
+                        // ignore: use_build_context_synchronously
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const MyHomePage(title: "tsta"),
+                          ),
+                        );
+                      } else {
+                        _showDialog(response);
+                      }
                     },
                     child: const Text("Login"),
                   ),

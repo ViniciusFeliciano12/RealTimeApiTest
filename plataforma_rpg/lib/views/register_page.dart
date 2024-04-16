@@ -16,14 +16,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   void initState() {
     super.initState();
-
-    hubConnect.startRegister((messages) {
-      if (messages[0] == "Usuário cadastrado") {
-        hubConnect.stopRegister();
-        Navigator.pop(context);
-      }
-      _showDialog(messages[0]);
-    });
   }
 
   @override
@@ -52,12 +44,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   onSubmitted: (value) {},
                 ),
                 TextField(
+                  obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
                       hintText: 'Senha', filled: true, fillColor: Colors.white),
                   onSubmitted: (value) {},
                 ),
                 TextField(
+                  obscureText: true,
                   controller: confirmPasswordController,
                   decoration: const InputDecoration(
                       hintText: 'Confirmar senha',
@@ -68,11 +62,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 5),
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (passwordController.text ==
                           confirmPasswordController.text) {
-                        hubConnect.sendRegister(
+                        var response = await hubConnect.sendRegister(
                             userController.text, passwordController.text);
+                        if (response == "Usuário cadastrado") {
+                          // ignore: use_build_context_synchronously
+                          Navigator.pop(context);
+                        }
+                        _showDialog(response);
                       } else {
                         _showDialog("Senha não confere com a confirmação");
                       }

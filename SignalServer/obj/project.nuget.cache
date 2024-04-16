@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Xn1E+92WAYUisMznnCd8pqbDyMo/GBWD9Qs2L29Z1RcjSkmVeC+he72POc47f7Up/oJnrrUWxiKx5YPE8+8R2A==",
+  "dgSpecHash": "M+7Ig55h7ZrysgmksYfCD2hXEtlS33z9MjvA3jnFf+xG3omp3fQ/8gofIR7KqfjsNjG8FdgvlP5mALLdYwcS9g==",
   "success": true,
-  "projectFilePath": "C:\\repositorios_gitHub\\RealTimeApiTest\\signalServer\\SignalServer.csproj",
+  "projectFilePath": "C:\\repositorios_gitHub\\RealTimeApiTest\\SignalServer\\SignalServer.csproj",
   "expectedPackageFiles": [
     "C:\\Nuget\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Nuget\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",

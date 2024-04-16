@@ -34,19 +34,6 @@ namespace SignalServer.API.Hubs
             }
         }
 
-        public async Task Login(string userName, string password)
-        {
-            var usuario = _context.Users.FirstOrDefault(a => a.UserName == userName && a.UserPassword == password);
-
-            if (usuario == null){
-                await Clients.Caller.SendAsync("LoginResponse", "Username ou senha não confere.");
-                return;
-            }
-            else{
-                await Clients.Caller.SendAsync("LoginResponse", usuario);
-            }
-        }
-
         public async Task SendMessage(int userId, string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message, DateTime.Now.ToShortTimeString());

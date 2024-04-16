@@ -6,16 +6,11 @@ using SignalServer.API.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"));
 
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Some API v1", Version = "v1" });
-    options.AddSignalRSwaggerGen();
-});
 
 builder.Services.AddCors(options =>
 {
@@ -30,7 +25,8 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment()){
+if (!app.Environment.IsDevelopment())
+{
     app.UseExceptionHandler("Errou otario");
 
     app.UseHsts();
@@ -39,13 +35,15 @@ if (!app.Environment.IsDevelopment()){
 }
 
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
 
-app.MapHub<MyHub>("/time");
-app.MapHub<ChatHub>("/chat");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<MyHub>("/time");
+    endpoints.MapHub<ChatHub>("/chat");
+});
 
 app.Run();
-
