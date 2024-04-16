@@ -47,9 +47,16 @@ namespace SignalServer.API.Hubs
             }
         }
 
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(int userId, string user, string message)
         {
             await Clients.All.SendAsync("ReceiveMessage", user, message, DateTime.Now.ToShortTimeString());
+            UserMessages newMessage = new UserMessages();
+            newMessage.UserID = userId;
+            newMessage.MessageHour = DateTime.Now;
+            newMessage.UserMessage = message;
+
+            _context.UserMessages.Add(newMessage);
+            await _context.SaveChangesAsync();
         }
     }
 }

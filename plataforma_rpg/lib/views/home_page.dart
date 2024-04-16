@@ -107,8 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             filled: true,
             fillColor: Colors.white),
         onSubmitted: (value) {
-          hubConnect.sendMessage(
-              hubConnect.usuario.userName, textController.text);
+          hubConnect.sendMessage(textController.text);
           textController.text = "";
           _focusNode.requestFocus();
         },

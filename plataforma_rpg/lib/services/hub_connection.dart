@@ -19,8 +19,9 @@ class HubConnectionService extends IHubConnectionService {
   }
 
   @override
-  void sendMessage(String name, String message) async {
-    await hubConnection.invoke("SendMessage", args: [name, message]);
+  void sendMessage(String message) async {
+    await hubConnection.invoke("SendMessage",
+        args: [usuario.userID, usuario.userName, message]);
   }
 
   @override

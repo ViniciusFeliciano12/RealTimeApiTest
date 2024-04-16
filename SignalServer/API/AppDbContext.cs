@@ -14,7 +14,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Users>().HasKey(u => u.UserID); // Especifica que a propriedade Id é a chave primária
 
         modelBuilder.Entity<UserMessages>()
-        .HasKey(o => o.UserID);
+        .HasKey(o => o.UserMessageId);
 
      modelBuilder.Entity<UserMessages>()
         .HasOne(m => m.User) // Relacionamento de um para um (uma mensagem pertence a um usuário)
