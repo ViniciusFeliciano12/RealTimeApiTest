@@ -8,27 +8,26 @@ import 'package:audioplayers/audioplayers.dart';
 import 'dart:html' as html;
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.listMessages});
 
-  final String title;
+  List<Message> listMessages = [];
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-List<Message> listMessages = [];
 final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
 TextEditingController textController = TextEditingController();
 final FocusNode _focusNode = FocusNode();
 final ScrollController _scrollController = ScrollController();
 final player = AudioPlayer();
 bool visibility = true;
+bool firstTime = true;
 
 class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-
     html.window.onFocus.listen((event) {
       setState(() {
         visibility = true;
@@ -41,16 +40,25 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.jumpTo(
+        _scrollController.position.maxScrollExtent + 60,
+      );
+    });
+
     hubConnect.start((messages) {
-      Message message = Message();
-      message.name = messages[0];
-      message.message = messages[1];
-      message.messageHour = messages[2];
-      if (listMessages.isNotEmpty && message.name == listMessages.last.name) {
+      Message message = Message(
+          message: messages[1],
+          messageHour: messages[2],
+          name: messages[0],
+          nameVisible: true);
+
+      if (widget.listMessages.isNotEmpty &&
+          message.name == widget.listMessages.last.name) {
         message.nameVisible = false;
       }
       setState(() {
-        listMessages.add(message);
+        widget.listMessages.add(message);
       });
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent + 60,
@@ -122,13 +130,15 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
             controller: _scrollController,
-            itemCount: listMessages.length,
+            itemCount: widget.listMessages.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {},
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
                 onHover: (value) {
                   setState(() {
-                    listMessages[index].isHovered = value;
+                    widget.listMessages[index].isHovered = value;
                   });
                 },
                 hoverColor: const Color.fromARGB(255, 43, 48, 53),
@@ -136,11 +146,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Visibility(
-                      visible: listMessages[index].nameVisible,
+                      visible: widget.listMessages[index].nameVisible,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 5, left: 10),
                         child: Text(
-                          "${listMessages[index].name} ",
+                          "${widget.listMessages[index].name} ",
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(255, 180, 182, 186),
@@ -154,8 +164,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: SizedBox(
                           width: 30,
                           child: Visibility(
-                            visible: listMessages[index].isHovered,
-                            child: Text("${listMessages[index].messageHour} ",
+                            visible: widget.listMessages[index].isHovered,
+                            child: Text(
+                                "${widget.listMessages[index].messageHour} ",
                                 style: const TextStyle(
                                     fontSize: 9,
                                     color: Color.fromARGB(255, 148, 140, 125))),
@@ -165,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
-                              listMessages[index].message,
+                              widget.listMessages[index].message,
                             ),
                           ),
                         ),

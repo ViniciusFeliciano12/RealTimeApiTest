@@ -33,24 +33,24 @@ class EstruturaPagina extends StatelessWidget {
                   leading: const Text("Chat page"),
                 ),
               ),
-              Flexible(
-                child: ListTile(
-                  hoverColor: const Color.fromARGB(255, 53, 55, 60),
-                  onTap: () {
-                    if (index != 2) {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  const LoginPage(),
-                        ),
-                      );
-                    }
-                  },
-                  leading: const Text("Página de teste"),
-                ),
-              ),
+              // Flexible(
+              //   child: ListTile(
+              //     hoverColor: const Color.fromARGB(255, 53, 55, 60),
+              //     onTap: () {
+              //       if (index != 2) {
+              //         Navigator.push(
+              //           context,
+              //           PageRouteBuilder(
+              //             pageBuilder:
+              //                 (context, animation, secondaryAnimation) =>
+              //                     const LoginPage(),
+              //           ),
+              //         );
+              //       }
+              //     },
+              //     leading: const Text("Página de teste"),
+              //   ),
+              // ),
             ],
           ),
         ),

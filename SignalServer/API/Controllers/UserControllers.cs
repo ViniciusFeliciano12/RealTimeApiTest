@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SignalServer.API.Hubs;
 
 [ApiController]
@@ -45,5 +46,28 @@ public class UserController : ControllerBase
             else{
                 return Conflict("Não foi possível registrar esse usuário.");
             }
+    }
+
+    [HttpGet("getMessageHistory")]
+    public IActionResult MessageHistory()
+    {
+        var messages = _context.UserMessages.Include(a => a.User).ToList();
+
+        List<MessageHistoryDTO> historic = new List<MessageHistoryDTO>();
+
+        if (messages.Count > 0){
+            var lastMessage = messages[0];
+            bool first = true;
+            foreach(var msg in messages){
+                var msgs = new MessageHistoryDTO(msg);
+                if (!first && msgs.name == lastMessage.User!.UserName){
+                    msgs.nameVisible = false;
+                }
+                historic.Add(msgs);
+                first = false;
+                lastMessage = msg;
+            }
+        }
+        return Ok(historic);
     }
 }

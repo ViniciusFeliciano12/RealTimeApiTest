@@ -1,3 +1,4 @@
+import '../../models/message.dart';
 import '../../models/user.dart';
 
 abstract class IHubConnectionService {
@@ -7,4 +8,5 @@ abstract class IHubConnectionService {
   void sendMessage(String message);
   Future<String> sendRegister(String name, String password);
   Future<String> sendLogin(String name, String password);
+  Future<List<Message>> getMessages();
 }

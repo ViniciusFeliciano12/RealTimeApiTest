@@ -3,6 +3,7 @@ import 'package:plataforma_rpg/views/drawer_view.dart';
 import 'package:plataforma_rpg/views/home_page.dart';
 import 'package:plataforma_rpg/views/register_page.dart';
 
+import '../models/message.dart';
 import '../models/user.dart';
 import '../services/interfaces/ihub_connection.dart';
 import '../services/service_locator.dart';
@@ -16,6 +17,11 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
+  List<Message> listMessages = [];
+
+  Future callMessages() async {
+    listMessages = await hubConnect.getMessages();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +62,14 @@ class _LoginPageState extends State<LoginPage> {
                           userController.text, passwordController.text);
 
                       if (response == "Logado") {
+                        await callMessages();
                         // ignore: use_build_context_synchronously
                         Navigator.push(
                           context,
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    const MyHomePage(title: "tsta"),
+                                    MyHomePage(listMessages: listMessages),
                           ),
                         );
                       } else {

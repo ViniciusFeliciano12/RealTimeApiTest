@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 import 'package:http/http.dart' as http;
+import '../models/message.dart';
 import '../models/user.dart';
 
 class HubConnectionService extends IHubConnectionService {
@@ -50,6 +51,20 @@ class HubConnectionService extends IHubConnectionService {
       return "Logado";
     }
     return response.body;
+  }
+
+  @override
+  Future<List<Message>> getMessages() async {
+    var url = Uri.parse('${baseUrl}api/user/getMessageHistory');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      List<Message> messages =
+          jsonResponse.map((data) => Message.fromJson(data)).toList();
+      return messages;
+    } else {
+      return [];
+    }
   }
 
   void stop() {
