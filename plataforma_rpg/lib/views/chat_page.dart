@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:plataforma_rpg/models/message.dart';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
+import 'package:plataforma_rpg/views/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import '../services/service_locator.dart';
 import 'drawer_view.dart';
 import 'package:audioplayers/audioplayers.dart';
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.listMessages});
-
-  List<Message> listMessages = [];
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
 final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
@@ -23,8 +24,9 @@ final ScrollController _scrollController = ScrollController();
 final player = AudioPlayer();
 bool visibility = true;
 bool firstTime = true;
+List<Message> listMessages = [];
 
-class _MyHomePageState extends State<MyHomePage> {
+class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
@@ -40,7 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     });
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      listMessages = await hubConnect.getMessages();
       _scrollController.jumpTo(
         _scrollController.position.maxScrollExtent + 60,
       );
@@ -53,12 +56,11 @@ class _MyHomePageState extends State<MyHomePage> {
           name: messages[0],
           nameVisible: true);
 
-      if (widget.listMessages.isNotEmpty &&
-          message.name == widget.listMessages.last.name) {
+      if (listMessages.isNotEmpty && message.name == listMessages.last.name) {
         message.nameVisible = false;
       }
       setState(() {
-        widget.listMessages.add(message);
+        listMessages.add(message);
       });
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent + 60,
@@ -77,8 +79,27 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 49, 51, 56),
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.blueGrey,
+        actions: [
+          TextButton(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.clear();
+              if (!mounted) return;
+              Navigator.pushReplacement(
+                context,
+                PageRouteBuilder(
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      const LoginPage(),
+                ),
+              );
+            },
+            child: const Text(
+              "Logout",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ],
       ),
       body: VisibilityDetector(
         onVisibilityChanged: (info) {
@@ -86,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             visibility = info.visibleFraction * 100 != 0;
           });
         },
-        key: Key("key"),
+        key: const Key("key"),
         child: EstruturaPagina(
           index: 1,
           page: Expanded(
@@ -130,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.all(8.0),
           child: ListView.builder(
             controller: _scrollController,
-            itemCount: widget.listMessages.length,
+            itemCount: listMessages.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {},
@@ -138,7 +159,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 splashColor: Colors.transparent,
                 onHover: (value) {
                   setState(() {
-                    widget.listMessages[index].isHovered = value;
+                    listMessages[index].isHovered = value;
                   });
                 },
                 hoverColor: const Color.fromARGB(255, 43, 48, 53),
@@ -146,14 +167,29 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Visibility(
-                      visible: widget.listMessages[index].nameVisible,
+                      visible: listMessages[index].nameVisible,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 5, left: 10),
-                        child: Text(
-                          "${widget.listMessages[index].name} ",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 180, 182, 186),
+                        child: Flexible(
+                          child: Row(
+                            children: [
+                              Text(
+                                listMessages[index].name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 180, 182, 186),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Text(listMessages[index].messageHour,
+                                    style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromARGB(
+                                            255, 136, 136, 136))),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -164,9 +200,10 @@ class _MyHomePageState extends State<MyHomePage> {
                             child: SizedBox(
                           width: 30,
                           child: Visibility(
-                            visible: widget.listMessages[index].isHovered,
+                            visible: listMessages[index].isHovered &&
+                                !listMessages[index].nameVisible,
                             child: Text(
-                                "${widget.listMessages[index].messageHour} ",
+                                "${listMessages[index].messageHour.substring(listMessages[index].messageHour.length - 5)} ",
                                 style: const TextStyle(
                                     fontSize: 9,
                                     color: Color.fromARGB(255, 148, 140, 125))),
@@ -176,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 2, bottom: 2),
                             child: Text(
-                              widget.listMessages[index].message,
+                              listMessages[index].message,
                             ),
                           ),
                         ),

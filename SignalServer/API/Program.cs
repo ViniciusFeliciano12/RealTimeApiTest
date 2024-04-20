@@ -39,11 +39,8 @@ app.UseAuthorization();
 
 app.UseCors("CorsPolicy");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapHub<MyHub>("/time");
-    endpoints.MapHub<ChatHub>("/chat");
-});
+app.MapHub<MyHub>("/time");
+app.MapHub<ChatHub>("/chat");
+app.MapControllers();
 
 app.Run();

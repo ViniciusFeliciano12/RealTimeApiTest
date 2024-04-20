@@ -10,6 +10,19 @@ public class MessageHistoryDTO
     public MessageHistoryDTO(UserMessages message){
         name = message.User!.UserName;
         this.message = message.UserMessage;
-        messageHour = message.MessageHour.ToShortTimeString();
+
+        TimeSpan difference = DateTime.Today - message.MessageHour.Date;
+        switch (difference.Days)
+        {
+            case 0:
+                messageHour = $"Hoje às {message.MessageHour:HH:mm}";
+                break;
+            case 1:
+                messageHour = $"Ontem às {message.MessageHour:HH:mm}";
+                break;
+            default:
+                messageHour = $"{message.MessageHour:dd/MM/yyyy} às {message.MessageHour:HH:mm}";
+                break;
+        }
     }
 }

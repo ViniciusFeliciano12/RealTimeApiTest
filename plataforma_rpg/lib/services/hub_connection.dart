@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:http/http.dart';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 import 'package:http/http.dart' as http;
@@ -10,7 +11,7 @@ class HubConnectionService extends IHubConnectionService {
   @override
   late User usuario;
 
-  var baseUrl = "http://26.159.154.197:5207/";
+  var baseUrl = "http://192.168.100.14:5207/";
 
   late HubConnection hubConnection;
 
@@ -42,15 +43,21 @@ class HubConnectionService extends IHubConnectionService {
 
   @override
   Future<String> sendLogin(String name, String password) async {
-    var url = Uri.parse('${baseUrl}api/user/loginAsync');
-    var body = jsonEncode({'username': name, 'password': password});
-    var headers = {'Content-Type': 'application/json'};
-    var response = await http.post(url, body: body, headers: headers);
-    if (response.statusCode == 200) {
-      usuario = User.fromJson(jsonDecode(response.body));
-      return "Logado";
+    Response? response;
+    try {
+      var url = Uri.parse('${baseUrl}api/user/loginAsync');
+      var body = jsonEncode({'username': name, 'password': password});
+      var headers = {'Content-Type': 'application/json'};
+      response = await http.post(url, body: body, headers: headers);
+      if (response.statusCode == 200) {
+        usuario = User.fromJson(jsonDecode(response.body));
+        return "Logado";
+      }
+    } catch (ex) {
+      ex.toString();
     }
-    return response.body;
+
+    return response!.body;
   }
 
   @override

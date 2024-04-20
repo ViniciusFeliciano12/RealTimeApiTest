@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:plataforma_rpg/views/chat_page.dart';
 import 'package:plataforma_rpg/views/login_page.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool logado;
+  const MyApp({super.key, required this.logado});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
       ),
-      home: const LoginPage(),
+      home: logado ? const ChatPage() : const LoginPage(),
     );
   }
 }

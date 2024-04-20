@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'chat_page.dart';
 import 'login_page.dart';
 
 class EstruturaPagina extends StatelessWidget {
@@ -18,6 +18,7 @@ class EstruturaPagina extends StatelessWidget {
     return Row(
       children: [
         Drawer(
+          width: 200,
           shadowColor: Colors.transparent,
           backgroundColor: const Color.fromARGB(255, 43, 45, 49),
           child: Column(

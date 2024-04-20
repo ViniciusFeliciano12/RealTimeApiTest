@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SignalServer.API.Hubs;
@@ -8,6 +10,20 @@ public class UserController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
 
+    public string HashPassword(string password)
+    {
+        byte[] hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+
+        StringBuilder builder = new();
+        for (int i = 0; i < hashedBytes.Length; i++)
+        {
+            builder.Append(hashedBytes[i].ToString("x2"));
+        }
+
+        return builder.ToString();
+    }
+
+
     public UserController(ApplicationDbContext context){
         _context = context;
     }
@@ -15,12 +31,14 @@ public class UserController : ControllerBase
     [HttpPost("loginAsync")]
     public IActionResult LoginAsync([FromBody] LoginDTO login)
     {
-        var usuario = _context.Users.FirstOrDefault(a => a.UserName == login.Username && a.UserPassword == login.Password);
+        var usuario = _context.Users.FirstOrDefault(a => a.UserName == login.Username && a.UserPassword == 
+        HashPassword(login.Password));
 
         if (usuario == null){
             return NotFound("Username ou senha não confere.");
         }
         else{
+            usuario.UserPassword = "censurada";
             return Ok(usuario);
         }
     }
@@ -30,22 +48,22 @@ public class UserController : ControllerBase
     {
         int quantityAltered = 0;
 
-            var usuario = _context.Users.FirstOrDefault(a => a.UserName == register.Username);
+        var usuario = _context.Users.FirstOrDefault(a => a.UserName == register.Username);
 
-            if (usuario != null){
-                return Conflict("Já existe um usuário com esse nome; tente novamente.");
-            }
+        if (usuario != null){
+            return Conflict("Já existe um usuário com esse nome; tente novamente.");
+        }
 
-            Users novoUsuario = new Users { UserName = register.Username, UserPassword = register.Password};
-            await _context.Users.AddAsync(novoUsuario);
-            quantityAltered = await _context.SaveChangesAsync();
+        Users novoUsuario = new() { UserName = register.Username, UserPassword = HashPassword(register.Password)};
+        await _context.Users.AddAsync(novoUsuario);
+        quantityAltered = await _context.SaveChangesAsync();
 
-            if (quantityAltered > 0){
-                return Ok("Usuário cadastrado.");
-            }
-            else{
-                return Conflict("Não foi possível registrar esse usuário.");
-            }
+        if (quantityAltered > 0){
+            return Ok("Usuário cadastrado.");
+        }
+        else{
+            return Conflict("Não foi possível registrar esse usuário.");
+        }
     }
 
     [HttpGet("getMessageHistory")]
@@ -53,7 +71,7 @@ public class UserController : ControllerBase
     {
         var messages = _context.UserMessages.Include(a => a.User).ToList();
 
-        List<MessageHistoryDTO> historic = new List<MessageHistoryDTO>();
+        List<MessageHistoryDTO> historic = [];
 
         if (messages.Count > 0){
             var lastMessage = messages[0];
