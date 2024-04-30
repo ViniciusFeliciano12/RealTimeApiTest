@@ -1,3 +1,5 @@
 .DS_Store
 /MauiTesteApp/.vs/MauiTesteApp/FileContentIndex/*.vsidx
 /MauiTesteApp/.vs/MauiTesteApp/DesignTimeBuild/*.v2
+/SignalServer/bin/
+/SignalServer/obj/
