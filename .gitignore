@@ -12,3 +12,6 @@ plataforma_rpg/windows/flutter/generated_plugins.cmake
 /SignalClient/obj
 /SignalClient/bin
 /PlataformaRPG/*.lock
+/PlataformaRPG/windows/flutter/generated_plugin_registrant.cc
+/PlataformaRPG/windows/flutter/generated_plugin_registrant.h
+/PlataformaRPG/windows/flutter/generated_plugins.cmake
