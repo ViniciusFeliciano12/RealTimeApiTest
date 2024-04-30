@@ -1,14 +1,8 @@
 .DS_Store
 /MauiTesteApp/.vs/MauiTesteApp/FileContentIndex/*.vsidx
 /MauiTesteApp/.vs/MauiTesteApp/DesignTimeBuild/*.v2
-plataforma_rpg/windows/flutter/generated_plugin_registrant.cc
-plataforma_rpg/windows/flutter/generated_plugin_registrant.h
-plataforma_rpg/windows/flutter/generated_plugins.cmake
 /SignalServer/bin
 /SignalServer/obj
-/plataforma_rpg/windows/flutter/*.cc
-/plataforma_rpg/windows/flutter/generated_plugin_registrant.h
-/plataforma_rpg/windows/flutter/generated_plugins.cmake
 /SignalClient/obj
 /SignalClient/bin
 /PlataformaRPG/*.lock
