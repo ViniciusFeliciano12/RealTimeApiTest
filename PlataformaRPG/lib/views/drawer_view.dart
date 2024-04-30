@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:plataforma_rpg/views/test_page.dart';
+
+import 'character_page.dart';
 
 class EstruturaPagina extends StatelessWidget {
   const EstruturaPagina({
@@ -31,24 +34,66 @@ class EstruturaPagina extends StatelessWidget {
                   leading: const Text("Chat page"),
                 ),
               ),
-              // Flexible(
-              //   child: ListTile(
-              //     hoverColor: const Color.fromARGB(255, 53, 55, 60),
-              //     onTap: () {
-              //       if (index != 2) {
-              //         Navigator.push(
-              //           context,
-              //           PageRouteBuilder(
-              //             pageBuilder:
-              //                 (context, animation, secondaryAnimation) =>
-              //                     const LoginPage(),
-              //           ),
-              //         );
-              //       }
-              //     },
-              //     leading: const Text("Página de teste"),
-              //   ),
-              // ),
+              Flexible(
+                child: ListTile(
+                  hoverColor: const Color.fromARGB(255, 53, 55, 60),
+                  onTap: () {
+                    print(Navigator.of(context).widget.pages.length.toString());
+                    if (index != 2) {
+                      if (Navigator.of(context).widget.pages.length == 1) {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const CharacterPage(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const CharacterPage(),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  leading: const Text("Página de personagem"),
+                ),
+              ),
+              Flexible(
+                child: ListTile(
+                  hoverColor: const Color.fromARGB(255, 53, 55, 60),
+                  onTap: () {
+                    print(Navigator.of(context).widget.pages.length.toString());
+                    if (index != 3) {
+                      if (Navigator.of(context).widget.pages.length == 1) {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const TestPage(),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const TestPage(),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  leading: const Text("Página de teste"),
+                ),
+              ),
             ],
           ),
         ),

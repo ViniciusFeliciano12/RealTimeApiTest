@@ -3,26 +3,43 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Server/Client",
+            "configurations": ["API home", "Chat"]
+        },
+    ],
     "configurations": [
         {
-            "name": "PlataformaRPG",
-            "cwd": "PlataformaRPG",
+            "name": "API home",
+            "type": "coreclr",
             "request": "launch",
-            "type": "dart"
+            "program": "${workspaceFolder}/SignalServer/bin/Debug/net8.0/SignalServer.dll",
+            "launchSettingsProfile": "http",
+            "cwd": "${workspaceFolder}/SignalServer",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },  
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
         },
         {
-            "name": "PlataformaRPG (profile mode)",
-            "cwd": "PlataformaRPG",
+            "name": "Chat",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "program": "${workspaceFolder}/PlataformaRPG/lib/main.dart",
+            "args": [
+                "--dart-define-from-file=.env.json",
+                "--web-hostname", "0.0.0.0",
+                "--web-port","8989"
+            ],
+            "flutterMode": "debug",
+            "deviceId": "web-server",
         },
-        {
-            "name": "PlataformaRPG (release mode)",
-            "cwd": "PlataformaRPG",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
-        }
     ]
 }

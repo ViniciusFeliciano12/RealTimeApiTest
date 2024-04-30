@@ -170,27 +170,27 @@ class _ChatPageState extends State<ChatPage> {
                       visible: listMessages[index].nameVisible,
                       child: Padding(
                         padding: const EdgeInsets.only(top: 5, left: 10),
-                        child: Flexible(
-                          child: Row(
-                            children: [
-                              Text(
-                                listMessages[index].name,
+                        child: Row(
+                          children: [
+                            Text(
+                              listMessages[index].name,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 180, 182, 186),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Text(
+                                listMessages[index].messageHour,
                                 style: const TextStyle(
+                                  fontSize: 11,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 180, 182, 186),
+                                  color: Color.fromARGB(255, 136, 136, 136),
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8),
-                                child: Text(listMessages[index].messageHour,
-                                    style: const TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color.fromARGB(
-                                            255, 136, 136, 136))),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
