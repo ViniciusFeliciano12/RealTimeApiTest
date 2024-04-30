@@ -1,2 +1,0 @@
-C:\repositorios_gitHub\RealTimeApiTest\signalclient\bin\Release\net8.0\win-x64\publish\SignalClient.pdb
-C:\repositorios_gitHub\RealTimeApiTest\signalclient\bin\Release\net8.0\win-x64\publish\SignalClient.exe
