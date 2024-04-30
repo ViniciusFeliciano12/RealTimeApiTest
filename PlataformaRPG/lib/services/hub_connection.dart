@@ -11,7 +11,19 @@ class HubConnectionService extends IHubConnectionService {
   @override
   late User usuario;
 
-  var baseUrl = "http://192.168.100.14:5207/";
+  static const Map<String, String> _keys = {
+    'API_ENDPOINT': String.fromEnvironment('API_ENDPOINT')
+  };
+
+  static String _getKey(String key) {
+    final value = _keys[key] ?? '';
+    if (value.isEmpty) {
+      throw Exception('$key is not set in Env');
+    }
+    return value;
+  }
+
+  static String get baseUrl => _getKey('API_ENDPOINT');
 
   late HubConnection hubConnection;
 

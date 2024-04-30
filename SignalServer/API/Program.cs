@@ -9,7 +9,7 @@ builder.Services.AddSignalR();
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"));
+        options.UseSqlServer("Server=DESKTOP-3BMP5QS\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"));
 
 
 builder.Services.AddCors(options =>

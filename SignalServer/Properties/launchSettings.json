@@ -1,6 +1,6 @@
-﻿{
+{
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True;"
+    "DefaultConnection": "Server=DESKTOP-3BMP5QS\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true"
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
