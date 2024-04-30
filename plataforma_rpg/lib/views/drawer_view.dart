@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'chat_page.dart';
-import 'login_page.dart';
-
 class EstruturaPagina extends StatelessWidget {
   const EstruturaPagina({
     super.key,

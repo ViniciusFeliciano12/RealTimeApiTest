@@ -3,3 +3,6 @@
 /MauiTesteApp/.vs/MauiTesteApp/DesignTimeBuild/*.v2
 /SignalServer/bin/
 /SignalServer/obj/
+/plataforma_rpg/windows/flutter/*.cc
+/plataforma_rpg/windows/flutter/*.h
+/plataforma_rpg/windows/flutter/*.cmake
