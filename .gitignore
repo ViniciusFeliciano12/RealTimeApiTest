@@ -3,6 +3,7 @@
 /MauiTesteApp/.vs/MauiTesteApp/DesignTimeBuild/*.v2
 /SignalServer/bin
 /SignalServer/obj
+/SignalServer/.env
 /SignalClient/obj
 /SignalClient/bin
 /PlataformaRPG/*.lock
