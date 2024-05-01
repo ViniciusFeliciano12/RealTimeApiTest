@@ -1,54 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:plataforma_rpg/views/chat_page.dart';
-import 'package:plataforma_rpg/views/register_page.dart';
-import '../models/message.dart';
-import '../services/interfaces/ihub_connection.dart';
-import '../services/service_locator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../services/interfaces/ihub_connection.dart';
+import '../../services/interfaces/inavigation_service.dart';
+import '../../services/service_locator.dart';
 
-class LoginPage extends StatefulWidget {
-  final String? username;
-  final String? password;
-  const LoginPage({super.key, this.username, this.password});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
-  List<Message> listMessages = [];
 
-  Future callMessages() async {
-    listMessages = await hubConnect.getMessages();
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     TextEditingController userController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
 
-    Future onLoginButtonPressed() async {
-      var response = await hubConnect.sendLogin(
-          userController.text, passwordController.text);
-
-      if (response == "Logado") {
-        await callMessages();
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('username', userController.text);
-        prefs.setString('password', passwordController.text);
-        if (!mounted) return;
-        Navigator.pushReplacement(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (context, animation, secondaryAnimation) =>
-                const ChatPage(),
-          ),
-        );
-        userController.text = "";
-        passwordController.text = "";
-      } else {
+    Future tryRegister() async {
+      if (passwordController.text == confirmPasswordController.text) {
+        var response = await hubConnect.sendRegister(
+            userController.text, passwordController.text);
+        if (response == "Usuário cadastrado.") {
+          if (!mounted) return;
+          Navigator.pop(context);
+        }
         _showDialog(response);
+      } else {
+        _showDialog("Senha não confere com a confirmação");
       }
     }
 
@@ -57,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover,
+            fit: BoxFit.cover, // Ajusta a imagem para cobrir todo o container
           ),
         ),
         child: Center(
@@ -67,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 color: Colors.white,
                 border: Border.all(color: Colors.black, width: 1)),
             width: 200,
-            height: 210,
+            height: 220,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -81,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                         fillColor: Colors.white),
                     onSubmitted: (value) {},
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 10),
                   TextField(
                     obscureText: true,
                     controller: passwordController,
@@ -89,30 +75,26 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'Senha',
                         filled: true,
                         fillColor: Colors.white),
+                    onSubmitted: (value) {},
+                  ),
+                  const SizedBox(height: 10),
+                  TextField(
+                    obscureText: true,
+                    controller: confirmPasswordController,
+                    decoration: const InputDecoration(
+                        hintText: 'Confirmar senha',
+                        filled: true,
+                        fillColor: Colors.white),
                     onSubmitted: (value) async {
-                      await onLoginButtonPressed();
+                      await tryRegister();
                     },
                   ),
-                  const SizedBox(height: 15),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await onLoginButtonPressed();
-                    },
-                    child: const Text("Login"),
-                  ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 10),
                   ElevatedButton(
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  const RegisterPage(),
-                        ),
-                      );
+                    onPressed: () async {
+                      await tryRegister();
                     },
                     child: const Text("Register"),
                   ),
@@ -131,14 +113,14 @@ class _LoginPageState extends State<LoginPage> {
       builder: (BuildContext context) {
         // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: const Text("Login"),
+          title: const Text("Registro"),
           content: Text(message),
           actions: <Widget>[
             // define os botões na base do dialogo
             ElevatedButton(
               child: const Text("Fechar"),
               onPressed: () {
-                Navigator.of(context).pop();
+                getIt<INavigationService>().backToLastPage(context);
               },
             ),
           ],

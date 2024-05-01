@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:plataforma_rpg/views/chat_page.dart';
-import 'package:plataforma_rpg/views/login_page.dart';
+import 'package:plataforma_rpg/views/external/login_page.dart';
+import 'package:plataforma_rpg/views/internal/chat_page.dart';
 
 class MyApp extends StatelessWidget {
   final bool logado;

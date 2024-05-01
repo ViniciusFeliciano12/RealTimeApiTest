@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:plataforma_rpg/services/interfaces/inavigation_service.dart';
+import 'package:plataforma_rpg/views/external/register_page.dart';
+import '../../services/interfaces/ihub_connection.dart';
+import '../../services/service_locator.dart';
+import '../internal/chat_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/interfaces/ihub_connection.dart';
-import '../services/service_locator.dart';
-
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class LoginPage extends StatefulWidget {
+  final String? username;
+  final String? password;
+  const LoginPage({super.key, this.username, this.password});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     TextEditingController userController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
 
-    Future tryRegister() async {
-      if (passwordController.text == confirmPasswordController.text) {
-        var response = await hubConnect.sendRegister(
-            userController.text, passwordController.text);
-        if (response == "Usuário cadastrado.") {
-          if (!mounted) return;
-          Navigator.pop(context);
-        }
-        _showDialog(response);
+    Future onLoginButtonPressed() async {
+      var response = await getIt<IHubConnectionService>()
+          .sendLogin(userController.text, passwordController.text);
+
+      if (response == "Logado") {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('username', userController.text);
+        prefs.setString('password', passwordController.text);
+
+        if (!mounted) return;
+        getIt<INavigationService>()
+            .navigateAndReplace(context, const ChatPage(), 1);
       } else {
-        _showDialog("Senha não confere com a confirmação");
+        _showDialog(response);
       }
     }
 
@@ -43,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover, // Ajusta a imagem para cobrir todo o container
+            fit: BoxFit.cover,
           ),
         ),
         child: Center(
@@ -53,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 color: Colors.white,
                 border: Border.all(color: Colors.black, width: 1)),
             width: 200,
-            height: 220,
+            height: 210,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -65,9 +65,11 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: 'Usuário',
                         filled: true,
                         fillColor: Colors.white),
-                    onSubmitted: (value) {},
+                    onSubmitted: (value) async {
+                      await onLoginButtonPressed();
+                    },
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
                   TextField(
                     obscureText: true,
                     controller: passwordController,
@@ -75,26 +77,24 @@ class _RegisterPageState extends State<RegisterPage> {
                         hintText: 'Senha',
                         filled: true,
                         fillColor: Colors.white),
-                    onSubmitted: (value) {},
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    controller: confirmPasswordController,
-                    decoration: const InputDecoration(
-                        hintText: 'Confirmar senha',
-                        filled: true,
-                        fillColor: Colors.white),
                     onSubmitted: (value) async {
-                      await tryRegister();
+                      await onLoginButtonPressed();
                     },
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await onLoginButtonPressed();
+                    },
+                    child: const Text("Login"),
+                  ),
+                  const SizedBox(height: 8),
                   ElevatedButton(
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () async {
-                      await tryRegister();
+                    onPressed: () {
+                      getIt<INavigationService>().navigateWithoutReplace(
+                          context, const RegisterPage());
                     },
                     child: const Text("Register"),
                   ),
@@ -111,12 +111,10 @@ class _RegisterPageState extends State<RegisterPage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // retorna um objeto do tipo Dialog
         return AlertDialog(
-          title: const Text("Registro"),
+          title: const Text("Login"),
           content: Text(message),
           actions: <Widget>[
-            // define os botões na base do dialogo
             ElevatedButton(
               child: const Text("Fechar"),
               onPressed: () {

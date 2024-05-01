@@ -41,5 +41,14 @@
             "flutterMode": "debug",
             "deviceId": "web-server",
         },
+        {
+            "name": "DepuracaoAPP",
+            "cwd": "PlataformaRPG",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--dart-define-from-file=.env.json",
+            ],
+        },
     ]
 }

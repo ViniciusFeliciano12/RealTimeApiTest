@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
-import '../services/service_locator.dart';
-import 'drawer_view.dart';
+import '../../services/service_locator.dart';
+import '../shared/drawer_view.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({super.key});
@@ -20,11 +20,9 @@ class _TestPageState extends State<TestPage> {
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
       ),
-      body: EstruturaPagina(
+      body: const EstruturaPagina(
         index: 3,
-        page: Container(
-          child: Text("Teste"),
-        ),
+        page: Text("Teste"),
       ),
     );
   }

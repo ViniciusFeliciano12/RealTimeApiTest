@@ -1,14 +1,12 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:plataforma_rpg/models/message.dart';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
-import 'package:plataforma_rpg/views/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:visibility_detector/visibility_detector.dart';
-import '../services/service_locator.dart';
-import 'drawer_view.dart';
-import 'package:audioplayers/audioplayers.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
+import '../../services/interfaces/inavigation_service.dart';
+import '../../services/service_locator.dart';
+import '../external/login_page.dart';
+import '../shared/drawer_view.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -18,59 +16,42 @@ class ChatPage extends StatefulWidget {
 }
 
 final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
+
 TextEditingController textController = TextEditingController();
-final FocusNode _focusNode = FocusNode();
 final ScrollController _scrollController = ScrollController();
-final player = AudioPlayer();
-bool visibility = true;
+final FocusNode _focusNode = FocusNode();
 bool firstTime = true;
 List<Message> listMessages = [];
 
+late StreamSubscription<List<Message>> onListSubscription;
+
 class _ChatPageState extends State<ChatPage> {
+  @override
+  void dispose() {
+    super.dispose();
+    onListSubscription.cancel();
+  }
+
   @override
   void initState() {
     super.initState();
-    html.window.onFocus.listen((event) {
-      setState(() {
-        visibility = true;
-      });
-    });
-
-    html.window.onBlur.listen((event) {
-      setState(() {
-        visibility = false;
-      });
-    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      listMessages = await hubConnect.getMessages();
       _scrollController.jumpTo(
-        _scrollController.position.maxScrollExtent + 60,
+        _scrollController.position.maxScrollExtent,
       );
     });
 
-    hubConnect.start((messages) {
-      Message message = Message(
-          message: messages[1],
-          messageHour: messages[2],
-          name: messages[0],
-          nameVisible: true);
-
-      if (listMessages.isNotEmpty && message.name == listMessages.last.name) {
-        message.nameVisible = false;
-      }
+    onListSubscription = hubConnect.listaStream.listen((event) {
+      if (!mounted) return;
       setState(() {
-        listMessages.add(message);
+        listMessages = event;
       });
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent + 60,
         curve: Curves.easeOut,
         duration: const Duration(milliseconds: 300),
       );
-
-      if (!visibility) {
-        player.play(AssetSource('sounds/notification.wav'));
-      }
     });
   }
 
@@ -83,16 +64,10 @@ class _ChatPageState extends State<ChatPage> {
         actions: [
           TextButton(
             onPressed: () async {
-              SharedPreferences prefs = await SharedPreferences.getInstance();
-              prefs.clear();
+              (await SharedPreferences.getInstance()).clear();
               if (!mounted) return;
-              Navigator.pushReplacement(
-                context,
-                PageRouteBuilder(
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      const LoginPage(),
-                ),
-              );
+              getIt<INavigationService>()
+                  .navigateAndReplace(context, const LoginPage(), 0);
             },
             child: const Text(
               "Logout",
@@ -101,24 +76,16 @@ class _ChatPageState extends State<ChatPage> {
           ),
         ],
       ),
-      body: VisibilityDetector(
-        onVisibilityChanged: (info) {
-          setState(() {
-            visibility = info.visibleFraction * 100 != 0;
-          });
-        },
-        key: const Key("key"),
-        child: EstruturaPagina(
-          index: 1,
-          page: Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                listaDeMensagens(),
-                const SizedBox(height: 20),
-                textInput(),
-              ],
-            ),
+      body: EstruturaPagina(
+        index: 1,
+        page: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              listaDeMensagens(),
+              const SizedBox(height: 20),
+              textInput(),
+            ],
           ),
         ),
       ),

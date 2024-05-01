@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
-import 'package:plataforma_rpg/views/drawer_view.dart';
-import '../services/service_locator.dart';
+import '../../services/service_locator.dart';
+import '../shared/drawer_view.dart';
 
 class CharacterPage extends StatefulWidget {
   const CharacterPage({super.key});

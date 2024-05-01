@@ -1,20 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'package:audioplayers/audioplayers.dart';
 import 'package:http/http.dart';
 import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
+import 'package:plataforma_rpg/services/service_locator.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 import 'package:http/http.dart' as http;
 import '../models/message.dart';
 import '../models/user.dart';
+import 'interfaces/inavigation_service.dart';
 
 class HubConnectionService extends IHubConnectionService {
-  @override
-  late User usuario;
-
   static const Map<String, String> _keys = {
     'API_ENDPOINT': String.fromEnvironment('API_ENDPOINT')
   };
-
   static String _getKey(String key) {
     final value = _keys[key] ?? '';
     if (value.isEmpty) {
@@ -25,13 +24,47 @@ class HubConnectionService extends IHubConnectionService {
 
   static String get baseUrl => _getKey('API_ENDPOINT');
 
+  List<Message> listMessages = [];
+
+  final StreamController<List<Message>> _listaController =
+      StreamController<List<Message>>.broadcast(sync: true);
+
+  @override
+  Stream<List<Message>> get listaStream => _listaController.stream;
+  @override
+  late User usuario;
+  final player = AudioPlayer();
   late HubConnection hubConnection;
 
   @override
-  void start(Function(dynamic) onMessageReceived) async {
+  void start() async {
+    listMessages = await getMessages();
+
+    _listaController.add(listMessages);
+
     hubConnection = HubConnectionBuilder().withUrl("${baseUrl}chat").build();
 
-    hubConnection.on("ReceiveMessage", onMessageReceived);
+    hubConnection.on(
+      "ReceiveMessage",
+      (dynamic messages) {
+        Message message = Message(
+            message: messages[1],
+            messageHour: messages[2],
+            name: messages[0],
+            nameVisible: true);
+
+        if (listMessages.isNotEmpty && message.name == listMessages.last.name) {
+          message.nameVisible = false;
+        }
+        listMessages.add(message);
+        _listaController.add(listMessages);
+
+        if (!getIt<INavigationService>().getVisibility()) {
+          player.play(AssetSource('sounds/notification.wav'));
+        }
+      },
+    );
+
     if (hubConnection.state == HubConnectionState.Disconnected) {
       await hubConnection.start();
     }
@@ -61,8 +94,10 @@ class HubConnectionService extends IHubConnectionService {
       var body = jsonEncode({'username': name, 'password': password});
       var headers = {'Content-Type': 'application/json'};
       response = await http.post(url, body: body, headers: headers);
+
       if (response.statusCode == 200) {
         usuario = User.fromJson(jsonDecode(response.body));
+        start();
         return "Logado";
       }
     } catch (ex) {
@@ -86,7 +121,9 @@ class HubConnectionService extends IHubConnectionService {
     }
   }
 
+  @override
   void stop() {
     hubConnection.stop();
+    _listaController.close();
   }
 }
