@@ -61,10 +61,17 @@ class _ChatPageState extends State<ChatPage> {
       backgroundColor: const Color.fromARGB(255, 49, 51, 56),
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
+        title: Flexible(
+          child: Text(
+            hubConnect.usuario.userName,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () async {
               (await SharedPreferences.getInstance()).clear();
+              hubConnect.stop();
               if (!mounted) return;
               getIt<INavigationService>()
                   .navigateAndReplace(context, const LoginPage(), 0);

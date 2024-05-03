@@ -40,15 +40,18 @@ class EstruturaPagina extends StatelessWidget {
     );
   }
 
-  Flexible itemListTile(INavigationService navigationService,
+  SizedBox itemListTile(INavigationService navigationService,
       BuildContext context, Widget page, int index, String name) {
-    return Flexible(
+    return SizedBox(
+      height: 30,
+      width: 200,
       child: ListTile(
         hoverColor: const Color.fromARGB(255, 53, 55, 60),
         onTap: () {
           navigationService.navigateAndReplace(context, page, index);
         },
-        leading: Text(name),
+        leading: Padding(
+            padding: const EdgeInsets.only(bottom: 15), child: Text(name)),
       ),
     );
   }

@@ -124,6 +124,5 @@ class HubConnectionService extends IHubConnectionService {
   @override
   void stop() {
     hubConnection.stop();
-    _listaController.close();
   }
 }
