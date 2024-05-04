@@ -1,38 +1,19 @@
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SignalServer.API.DTO;
 using SignalServer.API.Hubs;
 
 [ApiController]
 [Route("api/[controller]")]
-public class UserController : ControllerBase
+public class UserController(ApplicationDbContext context) : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-
-    public string HashPassword(string password)
-    {
-        byte[] hashedBytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-
-        StringBuilder builder = new();
-        for (int i = 0; i < hashedBytes.Length; i++)
-        {
-            builder.Append(hashedBytes[i].ToString("x2"));
-        }
-
-        return builder.ToString();
-    }
-
-
-    public UserController(ApplicationDbContext context){
-        _context = context;
-    }
+    private readonly ApplicationDbContext _context = context;
 
     [HttpPost("loginAsync")]
     public IActionResult LoginAsync([FromBody] LoginDTO login)
     {
-        var usuario = _context.Users.FirstOrDefault(a => a.UserName == login.Username && a.UserPassword == 
-        HashPassword(login.Password));
+        var usuario = _context.Users.FirstOrDefault(a => a.UserName == login.Username &&
+         a.UserPassword == Utils.HashPassword(login.Password));
 
         usuario!.UserPassword = "censurada";
         return usuario == null ? NotFound("Username ou senha não confere.") : Ok(usuario);
@@ -47,7 +28,7 @@ public class UserController : ControllerBase
             return Conflict("Já existe um usuário com esse nome; tente novamente.");
         }
 
-        Users novoUsuario = new() { UserName = register.Username, UserPassword = HashPassword(register.Password)};
+        Users novoUsuario = new() { UserName = register.Username, UserPassword = Utils.HashPassword(register.Password)};
         await _context.Users.AddAsync(novoUsuario);
         int quantityAltered = await _context.SaveChangesAsync();
 
@@ -59,21 +40,16 @@ public class UserController : ControllerBase
     {
         var messages = _context.UserMessages.Include(a => a.User).ToList();
 
-        List<MessageHistoryDTO> historic = [];
+        var historic = messages.Select((message, index) =>
+        {
+            var msgs = new MessageHistoryDTO(message)
+            {
+                NameVisible = index == 0 || message.User!.UserName != messages[index - 1].User!.UserName ||
+                 message.MessageHour.Day != messages[index - 1].MessageHour.Day,
+            };
+            return msgs;
+        }).ToList();
 
-        if (messages.Count > 0){
-            var lastMessage = messages[0];
-            bool first = true;
-            foreach(var msg in messages){
-                var msgs = new MessageHistoryDTO(msg);
-                if (!first && msgs.name == lastMessage.User!.UserName){
-                    msgs.nameVisible = false;
-                }
-                historic.Add(msgs);
-                first = false;
-                lastMessage = msg;
-            }
-        }
         return Ok(historic);
     }
 }

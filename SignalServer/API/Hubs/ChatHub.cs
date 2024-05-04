@@ -2,20 +2,15 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace SignalServer.API.Hubs
 {
-    public class ChatHub : Hub
+    public class ChatHub(ApplicationDbContext context) : Hub
     {
-        private readonly ApplicationDbContext _context;
-
-        public ChatHub(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+        private readonly ApplicationDbContext _context = context;
 
         public async Task SendMessage(int userId, string user, string message)
         {
             var hora = DateTime.Now.ToShortTimeString();
             await Clients.All.SendAsync("ReceiveMessage", user, message, $"Hoje às {hora}");
-            UserMessages newMessage = new UserMessages
+            UserMessages newMessage = new()
             {
                 UserID = userId,
                 MessageHour = DateTime.Now,

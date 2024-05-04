@@ -4,6 +4,7 @@ using DotNetEnv;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Services.AddSignalR();
 
 builder.Services.AddControllers();
@@ -14,7 +15,6 @@ string dbConnectionString = Env.GetString("DB_CONNECTION_STRING");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(dbConnectionString));
-
 
 builder.Services.AddCors(options =>
 {

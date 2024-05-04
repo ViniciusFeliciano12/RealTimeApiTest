@@ -1,12 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using SignalServer.API.Hubs;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
+    public DbSet<Users> Users { get; set; }
+    public DbSet<UserMessages> UserMessages { get; set; }
+    public DbSet<Characters> Characters { get; set; }
+    public DbSet<CharacterStats> CharacterStats { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -33,11 +34,5 @@ public class ApplicationDbContext : DbContext
             .HasForeignKey(m => m.StatsID); 
         
         modelBuilder.Entity<CharacterStats>().HasKey(o => o.StatsID);
-
     }
-    public DbSet<Users> Users { get; set; }
-    public DbSet<UserMessages> UserMessages { get; set; }
-    public DbSet<Characters> Characters { get; set; }
-    public DbSet<CharacterStats> CharacterStats { get; set; }
-
 }

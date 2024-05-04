@@ -1,5 +1,8 @@
-public class LoginDTO
+namespace SignalServer.API.DTO
 {
-    public required string Username { get; set; }
-    public required string Password { get; set; }
+    public class LoginDTO
+    {
+        public required string Username { get; set; }
+        public required string Password { get; set; }
+    }
 }

@@ -15,5 +15,5 @@ namespace SignalServer.API.Hubs
                 await Task.Delay(1000);
             }
         }
-}
+    }
 }

@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,13 +6,9 @@ using SignalServer.API.Hubs;
 
 [ApiController]
 [Route("character")]
-public class CharacterControllers : ControllerBase
+public class CharacterControllers(ApplicationDbContext context) : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-
-    public CharacterControllers(ApplicationDbContext context){
-        _context = context;
-    }
+    private readonly ApplicationDbContext _context = context;
 
     [HttpPost("createCharacterAsync")]
     public async Task<IActionResult> CreateCharacterAsync([FromBody] CharactersDTO newCharacter)
