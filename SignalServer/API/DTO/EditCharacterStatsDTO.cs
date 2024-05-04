@@ -1,0 +1,12 @@
+using Microsoft.AspNetCore.SignalR;
+
+public class NewCharacterStatsDTO
+{
+   public int CharacterID { get; set; }
+   public int Points { get; set; }
+   public int Strength { get; set; }
+   public int Resistence { get; set; }
+   public int Agility { get; set; }
+   public int Inteligence { get; set; }
+}
+

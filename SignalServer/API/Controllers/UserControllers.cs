@@ -34,20 +34,13 @@ public class UserController : ControllerBase
         var usuario = _context.Users.FirstOrDefault(a => a.UserName == login.Username && a.UserPassword == 
         HashPassword(login.Password));
 
-        if (usuario == null){
-            return NotFound("Username ou senha não confere.");
-        }
-        else{
-            usuario.UserPassword = "censurada";
-            return Ok(usuario);
-        }
+        usuario!.UserPassword = "censurada";
+        return usuario == null ? NotFound("Username ou senha não confere.") : Ok(usuario);
     }
 
     [HttpPost("registerAsync")]
     public async Task<IActionResult> RegisterAsync([FromBody] LoginDTO register)
     {
-        int quantityAltered = 0;
-
         var usuario = _context.Users.FirstOrDefault(a => a.UserName == register.Username);
 
         if (usuario != null){
@@ -56,14 +49,9 @@ public class UserController : ControllerBase
 
         Users novoUsuario = new() { UserName = register.Username, UserPassword = HashPassword(register.Password)};
         await _context.Users.AddAsync(novoUsuario);
-        quantityAltered = await _context.SaveChangesAsync();
+        int quantityAltered = await _context.SaveChangesAsync();
 
-        if (quantityAltered > 0){
-            return Ok("Usuário cadastrado.");
-        }
-        else{
-            return Conflict("Não foi possível registrar esse usuário.");
-        }
+        return quantityAltered > 0 ? Ok("Usuário cadastrado.") :  Conflict("Não foi possível registrar esse usuário.");
     }
 
     [HttpGet("getMessageHistory")]

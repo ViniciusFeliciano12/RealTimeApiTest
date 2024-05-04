@@ -38,7 +38,7 @@ class _ChatPageState extends State<ChatPage> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _scrollController.jumpTo(
-        _scrollController.position.maxScrollExtent,
+        _scrollController.position.maxScrollExtent + 65,
       );
     });
 
