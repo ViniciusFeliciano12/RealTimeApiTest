@@ -16,6 +16,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   http: ^0.13.3
   shared_preferences: ^2.0.12
+  flutter_svg: ^0.22.0
 
 dev_dependencies:
   flutter_test:

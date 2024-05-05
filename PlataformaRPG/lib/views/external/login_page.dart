@@ -16,12 +16,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late TextEditingController userController = TextEditingController();
+  late TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController userController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
     Future onLoginButtonPressed() async {
+      if (userController.text.isEmpty || passwordController.text.isEmpty) {
+        return;
+      }
+
       var response = await getIt<IHubConnectionService>()
           .sendLogin(userController.text, passwordController.text);
 
@@ -39,66 +43,72 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover,
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Center(
-          child: Container(
-            decoration: BoxDecoration(
+          child: Center(
+            child: Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white,
-                border: Border.all(color: Colors.black, width: 1)),
-            width: 200,
-            height: 210,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    controller: userController,
-                    decoration: const InputDecoration(
-                        hintText: 'Usuário',
-                        filled: true,
-                        fillColor: Colors.white),
-                    onSubmitted: (value) async {
-                      await onLoginButtonPressed();
-                    },
-                  ),
-                  const SizedBox(height: 15),
-                  TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                        hintText: 'Senha',
-                        filled: true,
-                        fillColor: Colors.white),
-                    onSubmitted: (value) async {
-                      await onLoginButtonPressed();
-                    },
-                  ),
-                  const SizedBox(height: 15),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await onLoginButtonPressed();
-                    },
-                    child: const Text("Login"),
-                  ),
-                  const SizedBox(height: 8),
-                  ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () {
-                      getIt<INavigationService>().navigateWithoutReplace(
-                          context, const RegisterPage());
-                    },
-                    child: const Text("Register"),
-                  ),
-                ],
+                border: Border.all(color: Colors.black, width: 1),
+              ),
+              width: 200,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: userController,
+                      decoration: const InputDecoration(
+                          hintText: 'Usuário',
+                          filled: true,
+                          fillColor: Colors.white),
+                      onSubmitted: (value) async {
+                        await onLoginButtonPressed();
+                      },
+                    ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                          hintText: 'Senha',
+                          filled: true,
+                          fillColor: Colors.white),
+                      onSubmitted: (value) async {
+                        await onLoginButtonPressed();
+                      },
+                    ),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                      onPressed: () async {
+                        await onLoginButtonPressed();
+                      },
+                      child: const Text("Login"),
+                    ),
+                    const SizedBox(height: 8),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
+                      onPressed: () {
+                        getIt<INavigationService>().navigateWithoutReplace(
+                            context, const RegisterPage());
+                      },
+                      child: const Text("Register"),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -43,7 +43,8 @@ public class CharacterControllers(ApplicationDbContext context) : ControllerBase
     [HttpPost("editStatsCharacter")]
     public async Task<IActionResult> EditStatsCharacters([FromBody] NewCharacterStatsDTO newStats)
     {
-        var character = _context.Characters.Where(a => a.CharacterID == newStats.CharacterID).Include(a => a.CharacterStats).FirstOrDefault();
+        var character = _context.Characters.Where(character => character.CharacterID == newStats.CharacterID).
+        Include(character => character.CharacterStats).FirstOrDefault();
 
         if (character == null){
             return Conflict("Character não existe.");
@@ -64,7 +65,8 @@ public class CharacterControllers(ApplicationDbContext context) : ControllerBase
     [HttpGet("getAllCharacters")]
     public IActionResult GetAllCharacters([FromQuery] int userID)
     {
-        var characters = _context.Characters.Where(a => a.UserID == userID).Include(a => a.CharacterStats).ToList();
+        var characters = _context.Characters.Where(character => character.UserID == userID).
+        Include(character => character.CharacterStats).ToList();
 
         return characters.IsNullOrEmpty() ? Conflict("Não tem personagem registrado.") : Ok(characters);
     }

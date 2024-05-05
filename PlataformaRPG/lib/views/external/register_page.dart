@@ -11,21 +11,17 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final IHubConnectionService hubConnect = getIt<IHubConnectionService>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  late IHubConnectionService hubConnect = getIt<IHubConnectionService>();
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController userController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
-
     Future tryRegister() async {
-      if (passwordController.text == confirmPasswordController.text) {
+      if (passwordController.text == confirmPasswordController.text &&
+          passwordController.text.isNotEmpty &&
+          confirmPasswordController.text.isNotEmpty) {
         var response = await hubConnect.sendRegister(
             userController.text, passwordController.text);
         if (response == "Usuário cadastrado.") {
@@ -34,71 +30,77 @@ class _RegisterPageState extends State<RegisterPage> {
         }
         _showDialog(response);
       } else {
-        _showDialog("Senha não confere com a confirmação");
+        _showDialog("Senha não confere com a confirmação.");
       }
     }
 
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/background.jpg'),
-            fit: BoxFit.cover, // Ajusta a imagem para cobrir todo o container
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(
+            color: Colors.transparent,
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.cover, // Ajusta a imagem para cobrir todo o container
+            ),
           ),
-        ),
-        child: Center(
-          child: Container(
-            decoration: BoxDecoration(
+          child: Center(
+            child: Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 color: Colors.white,
-                border: Border.all(color: Colors.black, width: 1)),
-            width: 200,
-            height: 220,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    controller: userController,
-                    decoration: const InputDecoration(
-                        hintText: 'Usuário',
-                        filled: true,
-                        fillColor: Colors.white),
-                    onSubmitted: (value) {},
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                        hintText: 'Senha',
-                        filled: true,
-                        fillColor: Colors.white),
-                    onSubmitted: (value) {},
-                  ),
-                  const SizedBox(height: 10),
-                  TextField(
-                    obscureText: true,
-                    controller: confirmPasswordController,
-                    decoration: const InputDecoration(
-                        hintText: 'Confirmar senha',
-                        filled: true,
-                        fillColor: Colors.white),
-                    onSubmitted: (value) async {
-                      await tryRegister();
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () async {
-                      await tryRegister();
-                    },
-                    child: const Text("Register"),
-                  ),
-                ],
+                border: Border.all(color: Colors.black, width: 1),
+              ),
+              width: 200,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextField(
+                      controller: userController,
+                      decoration: const InputDecoration(
+                          hintText: 'Usuário',
+                          filled: true,
+                          fillColor: Colors.white),
+                      onSubmitted: (value) {},
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      obscureText: true,
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                          hintText: 'Senha',
+                          filled: true,
+                          fillColor: Colors.white),
+                      onSubmitted: (value) {},
+                    ),
+                    const SizedBox(height: 10),
+                    TextField(
+                      obscureText: true,
+                      controller: confirmPasswordController,
+                      decoration: const InputDecoration(
+                          hintText: 'Confirmar senha',
+                          filled: true,
+                          fillColor: Colors.white),
+                      onSubmitted: (value) async {
+                        await tryRegister();
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green),
+                      onPressed: () async {
+                        await tryRegister();
+                      },
+                      child: const Text("Register"),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

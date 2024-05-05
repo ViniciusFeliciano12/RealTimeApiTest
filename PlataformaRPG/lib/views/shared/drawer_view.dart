@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/interfaces/inavigation_service.dart';
 import '../../services/service_locator.dart';
-import '../internal/character_page.dart';
 import '../internal/chat_page.dart';
 import '../internal/test_page.dart';
 
@@ -21,15 +20,15 @@ class EstruturaPagina extends StatelessWidget {
     return Row(
       children: [
         Drawer(
-          width: 200,
+          width: MediaQuery.of(context).size.width > 650
+              ? MediaQuery.of(context).size.width * 0.15
+              : MediaQuery.of(context).size.width * 0.30,
           shadowColor: Colors.transparent,
           backgroundColor: const Color.fromARGB(255, 43, 45, 49),
           child: Column(
             children: [
               itemListTile(
                   navigationService, context, const ChatPage(), 1, "Chat Page"),
-              itemListTile(navigationService, context, const CharacterPage(), 2,
-                  "Página de personagem"),
               itemListTile(navigationService, context, const TestPage(), 3,
                   "Página de teste"),
             ],
