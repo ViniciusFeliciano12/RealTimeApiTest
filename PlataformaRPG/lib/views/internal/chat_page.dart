@@ -24,6 +24,7 @@ final FocusNode _focusNode = FocusNode();
 bool firstTime = true;
 List<Message> listMessages = [];
 bool optionsVisible = false;
+bool characterVisible = false;
 
 late StreamSubscription<List<Message>> onListSubscription;
 
@@ -127,7 +128,9 @@ class _ChatPageState extends State<ChatPage> {
                                 Color.fromARGB(0, 0, 0, 0),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              optionsVisible = !optionsVisible;
+                            },
                             child: const Text("Gerenciar perfil"),
                           ),
                           const SizedBox(height: 5),
@@ -140,7 +143,12 @@ class _ChatPageState extends State<ChatPage> {
                                 Color.fromARGB(0, 0, 0, 0),
                               ),
                             ),
-                            onPressed: () async {},
+                            onPressed: () async {
+                              setState(() {
+                                characterVisible = !characterVisible;
+                                optionsVisible = !optionsVisible;
+                              });
+                            },
                             child: const Text("Mostrar personagem",
                                 textAlign: TextAlign.center),
                           ),
@@ -156,7 +164,7 @@ class _ChatPageState extends State<ChatPage> {
                             ),
                             onPressed: () async {
                               logout();
-                              optionsVisible = false;
+                              optionsVisible = !optionsVisible;
                             },
                             child: const Text("Logout"),
                           ),
@@ -182,6 +190,7 @@ class _ChatPageState extends State<ChatPage> {
   Flexible body() {
     return Flexible(
       child: EstruturaPagina(
+        visibility: characterVisible,
         index: 1,
         page: Expanded(
           child: Column(

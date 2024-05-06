@@ -6,6 +6,7 @@ import 'package:plataforma_rpg/services/interfaces/ihub_connection.dart';
 import 'package:plataforma_rpg/services/service_locator.dart';
 import 'package:signalr_netcore/signalr_client.dart';
 import 'package:http/http.dart' as http;
+import '../models/character.dart';
 import '../models/message.dart';
 import '../models/user.dart';
 import 'interfaces/inavigation_service.dart';
@@ -25,6 +26,9 @@ class HubConnectionService extends IHubConnectionService {
   static String get baseUrl => _getKey('API_ENDPOINT');
 
   List<Message> listMessages = [];
+
+  @override
+  List<Character> listCharacters = [];
 
   final StreamController<List<Message>> _listaController =
       StreamController<List<Message>>.broadcast(sync: true);
@@ -79,8 +83,9 @@ class HubConnectionService extends IHubConnectionService {
   @override
   Future<String> sendRegister(String name, String password) async {
     var url = Uri.parse('${baseUrl}api/user/registerAsync');
-    var body = jsonEncode({'username': name, 'password': password});
     var headers = {'Content-Type': 'application/json'};
+
+    var body = jsonEncode({'username': name, 'password': password});
     var response = await http.post(url, body: body, headers: headers);
 
     return response.body;
@@ -91,19 +96,19 @@ class HubConnectionService extends IHubConnectionService {
     Response? response;
     try {
       var url = Uri.parse('${baseUrl}api/user/loginAsync');
-      var body = jsonEncode({'username': name, 'password': password});
       var headers = {'Content-Type': 'application/json'};
+      var body = jsonEncode({'username': name, 'password': password});
       response = await http.post(url, body: body, headers: headers);
 
       if (response.statusCode == 200) {
         usuario = User.fromJson(jsonDecode(response.body));
+        await getCharacters();
         start();
         return "Logado";
       }
     } catch (ex) {
       ex.toString();
     }
-
     return response!.body;
   }
 
@@ -119,6 +124,31 @@ class HubConnectionService extends IHubConnectionService {
     } else {
       return [];
     }
+  }
+
+  Future getCharacters() async {
+    listCharacters = [];
+    var url = Uri.parse(
+        '${baseUrl}character/getAllCharacters?userID=${usuario.userID}');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      List<dynamic> jsonResponse = jsonDecode(response.body);
+      listCharacters =
+          jsonResponse.map((data) => Character.fromJson(data)).toList();
+    }
+  }
+
+  @override
+  Future<int> createNewCharacter(Character character) async {
+    var url = Uri.parse('${baseUrl}character/createCharacterAsync');
+    var headers = {'Content-Type': 'application/json'};
+    character.userID = usuario.userID;
+    var body = jsonEncode(character.toJson());
+    var response = await http.post(url, body: body, headers: headers);
+    if (response.statusCode == 200) {
+      await getCharacters();
+    }
+    return response.statusCode;
   }
 
   @override

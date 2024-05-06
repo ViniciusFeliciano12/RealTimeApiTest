@@ -23,6 +23,7 @@ class _TestPageState extends State<TestPage> {
       body: const EstruturaPagina(
         index: 3,
         page: Text("Teste"),
+        visibility: false,
       ),
     );
   }
